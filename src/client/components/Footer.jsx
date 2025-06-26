@@ -5,10 +5,12 @@ import { FaFacebookSquare } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaYoutube } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
-import { Link } from 'react-router-dom';
+import { Link,  } from 'react-router-dom';
 
 
 const Footer = () => {
+
+    
     return (
         <div className='lg:px-10 text-white bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 flex flex-col w-full justify-center items-center'>
             <div className='w-full h-full flex flex-col lg:flex-row justify-center items-center'>
@@ -40,6 +42,7 @@ const Footer = () => {
                 <div className='flex py-4 capitalize flex-col font-mono w-full text-center'>
                     <p>email : satishchillapalli81@gmail.com</p>
                     <p>contact : +91 7995687250</p>
+
                 </div>
 
             </div>

@@ -62,10 +62,6 @@ const Shoes = () => {
                                     <RatingBar rating={item.rating} />
                                     <p className='text-[12px] font-semibold'>{item.rating}</p>
                                 </div>
-                                <div className='flex flex-col text-center gap-2 mb-2 mt-2 capitalize'>
-                                    <Link to={`/addcart/${item.id}`} className='w-full rounded capitalize text-sm p-1 font-semibold hover:bg-neutral-200 bg-gray-100 '>Add to cart</Link>
-                                    <Link to={`/buynow/${item.id}`} className='w-full rounded capitalize text-sm p-1 font-semibold hover:bg-neutral-800 bg-black text-white'>buy now</Link>
-                                </div>
 
                             </div>
 

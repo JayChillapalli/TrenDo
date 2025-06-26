@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, {  useState } from 'react'
 import { hero } from '../assets/assets'
 import { Link, useNavigate } from 'react-router-dom'
-
+import axios from "axios"
 
 
 const LoginPage = () => {
@@ -13,23 +13,52 @@ const LoginPage = () => {
 
     const navigate = useNavigate()
 
+    
+
     const data = {
-         email, password, 
+        email, password,
     }
 
     const handleSignin = async (e) => {
         e.preventDefault()
 
-        
+
         if (password.length < 8) {
             setError(true)
             setErrorMsg("the password length must be 8")
             return
         }
 
-        navigate("/signin")
+        try {
+            const res = await axios.post('http://localhost:1712/api/login', data)
+            
 
-        setError(false)
+            if (res.data.token) {
+                localStorage.setItem("token", res.data.token)
+                localStorage.setItem("user", res.data.user)
+                console.log(res.data.token);
+            }
+            if (res.data.success) {
+                setError(false)
+                navigate("/")
+                setErrorMsg("login sucessfull")
+                localStorage.setItem("email", email)
+            }
+            else {
+                setError(true)
+                setErrorMsg(res.data.message)
+            }
+
+        } catch (error) {
+            setError(true);
+            if (error.response && error.response.data && error.response.data.message) {
+                setErrorMsg(error.response.data.message);
+            } else {
+                setErrorMsg("Something went wrong. Please try again.");
+            }
+        }
+        console.log(localStorage.getItem("token"));
+
     }
     return (
         <div className='w-full poppins-regular *:text-sm  h-screen bg-white px-4 flex  justify-center items-center'>
@@ -49,7 +78,7 @@ const LoginPage = () => {
                         <div className='text-4xl text-black font-mono font-semibold'>TrenDo</div>
                         <p className=' text-[12px] font-semibold text-neutral-400 capitalize'>leave the fear. set the  trend</p>
                     </div>
-                    
+
                     <div className='w-full relative mt-4 lg:mt-0'>
                         <input type="email" required id="email" onChange={(e) => setEmail(e.target.value)}
                             className="peer w-full border-b border-gray-400 focus:outline-none focus:border-black bg-transparent pt-6 pb-2" placeholder=" " />
@@ -60,7 +89,7 @@ const LoginPage = () => {
                             className="peer w-full border-b border-gray-400 focus:outline-none focus:border-black bg-transparent pt-6 pb-2" placeholder=" " />
                         <label htmlFor="password" className="absolute left-0 top-2 text-gray-500 text-sm transition-all peer-placeholder-shown:top-6 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2 peer-focus:text-sm peer-focus:text-black">password</label>
                     </div>
-                   
+
 
                     <button type='submit' className='flex w-full text-center  justify-center p-3 mt-10 rounded-xl bg-black hover:bg-neutral-900 cursor-pointer text-white font-semibold'>Login</button>
 

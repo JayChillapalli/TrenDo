@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { hero } from '../assets/assets'
 import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 
 
@@ -33,9 +34,17 @@ const SignIn = () => {
             return
         }
 
-        navigate("/login")
+        try {
+            await axios.post("http://localhost:1712/api/signin", data)
+            setError(false)
+            
+            navigate("/login")
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
 
-        setError(false)
     }
     return (
         <div className='w-full poppins-regular *:text-sm  h-screen bg-white px-4 flex  justify-center items-center'>

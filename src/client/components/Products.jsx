@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 // import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { FaHeart } from "react-icons/fa";
 import RatingBar from './RatingBar';
@@ -12,11 +12,13 @@ const Products = () => {
     const [products, setProducts] = useState([])
     const [products2, setProducts2] = useState([])
 
+    const navigate = useNavigate()
+
     useEffect(() => {
         fetch('https://dummyjson.com/products/category/womens-dresses')
             .then(res => res.json())
             .then(data => {
-                console.log('Fetched womens :', data); // Debug
+                // console.log('Fetched womens :', data); // Debug
                 setProducts(data.products); // ✅ should be an array
             })
             .catch(err => console.error('Fetch error:', err));
@@ -24,15 +26,11 @@ const Products = () => {
         fetch('https://dummyjson.com/products/category/mens-shirts')
             .then(res => res.json())
             .then(data => {
-                console.log('Fetched:', data); // Debug
+                // console.log('Fetched:', data); // Debug
                 setProducts2(data.products); // ✅ should be an array
             })
             .catch(err => console.error('Fetch error:', err));
     }, []);
-
-    console.log('====================================');
-    console.log("shoes", products);
-    console.log('====================================');
 
     return (
         <div className='bg-slate-100 '>
@@ -59,15 +57,10 @@ const Products = () => {
                                     <p className='text-sm line-through '>${product.price}</p>
                                 </div>
                                 <p>{product.category}</p>
-                                <div className='flex items-center gap-2'>
+                                <div className='flex items-center mb-2 gap-2'>
                                     <RatingBar rating={product.rating} />
                                     <p className='text-[12px] font-semibold'>{product.rating}</p>
                                 </div>
-                                <div className='flex flex-col text-center gap-2 mb-2 mt-2 capitalize'>
-                                    <Link to={`/addcart/${product.id}`} className='w-full rounded capitalize text-sm p-1 font-semibold hover:bg-neutral-200 bg-gray-100 '>Add to cart</Link>
-                                    <Link to={`/buynow/${product.id}`} className='w-full rounded capitalize text-sm p-1 font-semibold hover:bg-neutral-800 bg-black text-white'>buy now</Link>
-                                </div>
-
                             </div>
 
                         </Link>
@@ -92,15 +85,12 @@ const Products = () => {
                                     <p className='text-sm line-through '>${product.price}</p>
                                 </div>
                                 <p>{product.category}</p>
-                                <div className='flex items-center gap-2'>
+                                <div className='flex items-center mb-2 gap-2'>
                                     <RatingBar rating={product.rating} />
                                     <p className='text-[12px] font-semibold'>{product.rating}</p>
                                 </div>
                             </div>
-                            <div className='flex flex-col text-center gap-2 mb-2 mt-2 capitalize'>
-                                <Link to={`/addcart/${product.id}`} className='w-full rounded capitalize text-sm p-1 font-semibold hover:bg-neutral-200 bg-gray-100 '>Add to cart</Link>
-                                <Link to={`/buynow/${product.id}`} className='w-full rounded capitalize text-sm p-1 font-semibold hover:bg-neutral-800 bg-black text-white'>buy now</Link>
-                            </div>
+                           
 
                         </Link>
                     ))

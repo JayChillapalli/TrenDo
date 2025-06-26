@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 import { FaStar } from "react-icons/fa";
 import RatingBar from '../components/RatingBar';
 import { AiFillLike } from "react-icons/ai";
 import { AiFillDislike } from "react-icons/ai";
+import { FaPlus } from "react-icons/fa6";
+import { FaMinus } from "react-icons/fa6";
 
 
 
@@ -15,10 +18,11 @@ const ProductPage = () => {
     const [product, setProduct] = useState([])
     const [image, setImage] = useState(null)
     const [reviews, setReviews] = useState([])
+    const [quantity, setQuantity] = useState(1)
+    const navigate = useNavigate()
 
     const [like, setLike] = useState()
-    console.log("like :",like);
-    
+
 
     useEffect(() => {
         fetch(`https://dummyjson.com/products/${id}`)
@@ -30,6 +34,36 @@ const ProductPage = () => {
             })
             .catch(err => console.log(err))
     }, [id])
+
+
+
+    const addCart = async () => {
+        const productId = product.id
+        const email = localStorage.getItem("email")
+
+        const cartData = { productId, email, quantity }
+
+        try {
+            const token = localStorage.getItem("token")
+            const res = await axios.post('http://localhost:1712/api/addcart', cartData)
+            if (token) {
+                if (res.data.success) {
+                    navigate(`/${res.data.user}/cart`)
+                    localStorage.setItem("user", res.data.user)
+                    console.log("from  products page",res.data.user);
+                    
+                }
+                else {
+                    console.log(res.data.message);
+                }
+            }
+
+        } catch (error) {
+            console.log(error);
+
+        }
+
+    }
 
 
     if (!product) (
@@ -62,12 +96,17 @@ const ProductPage = () => {
                             <p className='text-base  line-through text-red-800'>${product.price}</p>
                             <p className='text-base text-green-700 '>{product.discountPercentage}% off</p>
                         </div>
+                        <div className='flex gap-3 text-neutral-800 my-2 items-center justify-center  w-30'>
+                            <button onClick={() => setQuantity(prev => prev + 1)} className='border p-1 border-neutral-400 cursor-pointer'><FaPlus /></button>
+                            <p className='text-2xl'>{quantity}</p>
+                            <button onClick={() => setQuantity(prev => (prev > 1 ? prev - 1 : 1))} className='border p-1 border-neutral-400 cursor-pointer'><FaMinus /></button>
+                        </div>
                         <p className='bg-black w-20 flex items-center justify-center gap-1 font-semibold text-white text-center p-1 rounded-lg '>{product.rating} <span><FaStar /></span></p>
                         <p className='text-lg font-medium'>{product.brand}</p>
                         <p className='font-medium'>{product.category}</p>
                     </div>
                     <div className='flex px-4 gap-4 flex-col text-center mb-2 mt-2 capitalize'>
-                        <Link to={`/addcart/${product.id}`} className='w-full rounded capitalize text-sm p-1 font-semibold hover:bg-neutral-200 bg-gray-100 '>Add to cart</Link>
+                        <button onClick={addCart} className='w-full rounded capitalize text-sm p-1 font-semibold hover:bg-neutral-200 bg-gray-100 '>Add to cart</button>
                         <Link to={`/buynow/${product.id}`} className='w-full rounded capitalize text-sm p-1 font-semibold hover:bg-neutral-800 bg-black text-white'>buy now</Link>
                     </div>
                 </div>
@@ -121,14 +160,14 @@ const ProductPage = () => {
                                 <p className='poppins-regular lg:text-sm'>{review?.comment}</p>
                                 <div className='flex gap-5 items-center'>
                                     <div className='flex gap-2 items-center'>
-                                        <button className={` cursor-pointer text-xl  ${like ? "text-blue-700 ":"text-neutral-400"} `} onClick={()=> setLike(true)}><AiFillLike /></button>
+                                        <button className={` cursor-pointer text-xl  ${like ? "text-blue-700 " : "text-neutral-400"} `} onClick={() => setLike(true)}><AiFillLike /></button>
                                         <p>0</p>
                                     </div>
                                     <div className='flex gap-2 items-center'>
-                                        <button className={` cursor-pointer text-xl text-neutral-400 ${like ? "text-blue-700":"text-neutral-400"} `} onClick={()=> setLike(true)}><AiFillDislike /></button>
+                                        <button className={` cursor-pointer text-xl text-neutral-400 ${like ? "text-blue-700" : "text-neutral-400"} `} onClick={() => setLike(true)}><AiFillDislike /></button>
                                         <p>0</p>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         ))
