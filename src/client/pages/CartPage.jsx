@@ -13,7 +13,7 @@ const CartPage = () => {
       const email = localStorage.getItem("email")
       try {
 
-        const res = await axios.get('http://localhost:1712/api/cart',
+        const res = await axios.get("https://trendo-backend.onrender.com/api/cart",
           { params: { email } }
         )
 
@@ -62,9 +62,9 @@ const CartPage = () => {
                     <img src={product.images?.[0]} alt="" />
                   </div>
                   <div className='felx w flex-col'>
-                    <p>{product.title }</p>
-                    <p>{product.price }</p>
-                    <p>{cartItems[index]?.quantity }</p>
+                    <p>{product.title}</p>
+                    <p>{product.price}</p>
+                    <p>{cartItems[index]?.quantity}</p>
                   </div>
                 </Link>
               ))

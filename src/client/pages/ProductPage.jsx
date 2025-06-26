@@ -45,13 +45,13 @@ const ProductPage = () => {
 
         try {
             const token = localStorage.getItem("token")
-            const res = await axios.post('http://localhost:1712/api/addcart', cartData)
+            const res = await axios.post('https://trendo-backend.onrender.com/api/addcart', cartData)
             if (token) {
                 if (res.data.success) {
                     navigate(`/${res.data.user}/cart`)
                     localStorage.setItem("user", res.data.user)
-                    console.log("from  products page",res.data.user);
-                    
+                    console.log("from  products page", res.data.user);
+
                 }
                 else {
                     console.log(res.data.message);

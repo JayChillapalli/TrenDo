@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import { hero } from '../assets/assets'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from "axios"
@@ -13,7 +13,7 @@ const LoginPage = () => {
 
     const navigate = useNavigate()
 
-    
+
 
     const data = {
         email, password,
@@ -30,8 +30,8 @@ const LoginPage = () => {
         }
 
         try {
-            const res = await axios.post('http://localhost:1712/api/login', data)
-            
+            const res = await axios.post('https://trendo-backend.onrender.com/api/login', data)
+
 
             if (res.data.token) {
                 localStorage.setItem("token", res.data.token)

@@ -35,14 +35,14 @@ const SignIn = () => {
         }
 
         try {
-            await axios.post("http://localhost:1712/api/signin", data)
+            await axios.post("https://trendo-backend.onrender.com/api/signin", data)
             setError(false)
-            
+
             navigate("/login")
-            
+
         } catch (error) {
             console.log(error);
-            
+
         }
 
     }
